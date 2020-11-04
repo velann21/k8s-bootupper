@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="77b35dc2-ec90-4cc7-8d58-96b5566430dd" name="Default Changelist" comment="" />
+    <list default="true" id="77b35dc2-ec90-4cc7-8d58-96b5566430dd" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +21,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.go">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1646">
-              <caret line="262" selection-start-line="262" selection-end-line="262" />
+            <state relative-caret-position="195">
+              <caret line="250" selection-start-line="250" selection-end-line="250" />
               <folding>
                 <element signature="n#!!block;n#GenerateCACertTemplate#0" />
                 <element signature="n#!!block;n#GenerateKey#0" />
@@ -96,8 +99,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/main.go" />
         <option value="$PROJECT_DIR$/Dockerfile" />
+        <option value="$PROJECT_DIR$/main.go" />
       </list>
     </option>
   </component>
@@ -117,11 +120,13 @@
     <option name="width" value="1680" />
     <option name="height" value="965" />
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -133,7 +138,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -181,14 +185,15 @@
     </recent_temporary>
   </component>
   <component name="ToolWindowManager">
-    <frame x="242" y="23" width="1680" height="965" extended-state="0" />
+    <frame x="0" y="23" width="1680" height="965" extended-state="0" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2536855" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.257371" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32865497" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" weight="0.27450982" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.27450982" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3988304" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -196,7 +201,7 @@
       <window_info anchor="bottom" id="Docker" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
       <window_info anchor="bottom" id="Version Control" order="9" />
-      <window_info anchor="bottom" id="Terminal" order="10" weight="0.3911007" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.3911007" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -222,8 +227,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/main.go</url>
-          <line>314</line>
-          <properties />
+          <line>310</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>
@@ -269,8 +273,25 @@
     <entry file="file://$PROJECT_DIR$/ca.key" />
     <entry file="file://$PROJECT_DIR$/ca.crt" />
     <entry file="file://$PROJECT_DIR$/etcd.crt" />
+    <entry file="file:///usr/local/go/src/os/exec/exec.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="168" column="5" selection-start-line="168" selection-start-column="5" selection-end-line="168" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/go.mod">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Dockerfile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
+        </state>
+      </provider>
     </entry>
     <entry file="file:///usr/local/go/src/crypto/x509/x509.go">
       <provider selected="true" editor-type-id="text-editor">
@@ -293,27 +314,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/local/go/src/os/exec/exec.go">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="168" column="5" selection-start-line="168" selection-start-column="5" selection-end-line="168" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Dockerfile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="16" selection-start-line="3" selection-start-column="16" selection-end-line="3" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.go">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1646">
-          <caret line="262" selection-start-line="262" selection-end-line="262" />
+        <state relative-caret-position="195">
+          <caret line="250" selection-start-line="250" selection-end-line="250" />
           <folding>
             <element signature="n#!!block;n#GenerateCACertTemplate#0" />
             <element signature="n#!!block;n#GenerateKey#0" />

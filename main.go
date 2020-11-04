@@ -248,9 +248,6 @@ func moveEtcd(ips string){
 		log.Fatal(err)
 	}
 
-    fmt.Println("LocalBin --->>>", localBin)
-	fmt.Println("Local --->>>", local)
-	fmt.Println("Etcd --->>>",etcdService)
 }
 
 
@@ -260,7 +257,6 @@ func GenerateEtcdConfFile(thisNodeIp string)string{
 [Unit]
 Description=etcd
 Documentation=https://github.com/coreos
-
 [Service]
 ExecStart=/usr/local/bin/etcd \\
   --name master-1 \\
