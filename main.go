@@ -148,6 +148,8 @@ func GetEtcdBinaries() (*http.Response, error) {
 }
 
 func main() {
+
+
 	ip := os.Args[1]
 
 	caCert := GenerateCACertTemplate()
@@ -219,19 +221,32 @@ func CopyEtcdBinaryToUsrLcl(ips string){
 	if runtime.GOOS == "windows" {
 		fmt.Println("Can't Execute this on a windows machine")
 	} else {
-		fmt.Println("Executinf")
+		fmt.Println("Executing ----->>>>>>>>>>>>>>>>>>>")
 		moveEtcd(ips)
 	}
 }
 
 func moveEtcd(ips string){
-	localBin, err := exec.Command("cp", "-r","/etcd/etcd-v3.4.13-linux-amd64/etcd", "/usr/bin/").Output()
+	localBin, err := exec.Command("cp", "-r","/home/singaravelannandakumar/etcd/etcd-v3.4.13-linux-amd64/etcd", "/usr/bin/").Output()
 	if err != nil {
 		log.Println("Error occured /usr/bin/")
 		log.Fatal(err)
 	}
 
-	local, err := exec.Command("cp", "-r","/etcd/etcd-v3.4.13-linux-amd64/etcd", "/usr/local/bin/").Output()
+	chnageEtcdPermission, err := exec.Command("chmod", "777", "/usr/bin/etcd").Output()
+	if err != nil {
+		log.Println("Error occured /usr/bin/etcd")
+		log.Fatal(err)
+	}
+
+
+	local, err := exec.Command("cp", "-r","/home/singaravelannandakumar/etcd/etcd-v3.4.13-linux-amd64/etcd", "/usr/local/bin/").Output()
+	if err != nil {
+		log.Println("Error occured /usr/local/bin/")
+		log.Fatal(err)
+	}
+
+	chnageEtcdPermissionBin, err := exec.Command("chmod", "777", "/usr/local/bin/etcd").Output()
 	if err != nil {
 		log.Println("Error occured /usr/bin/")
 		log.Fatal(err)
@@ -240,15 +255,19 @@ func moveEtcd(ips string){
 
 	etcdConf := GenerateEtcdConfFile(ips)
 
+	fmt.Println("etcdConf______........", etcdConf)
+
 	etcdService, err := exec.Command( "sh", "-c", etcdConf).Output()
 	if err != nil {
 		log.Println("Error occured cat")
 		log.Fatal(err)
 	}
 
-	fmt.Println("localBin",localBin)
-	fmt.Println("local",local)
-	fmt.Println("etcdService",etcdService)
+	fmt.Println("chnageEtcdPermissionBin",string(chnageEtcdPermissionBin))
+	fmt.Println("chnageEtcdPermission",string(chnageEtcdPermission))
+	fmt.Println("localBin",string(localBin))
+	fmt.Println("local",string(local))
+	fmt.Println("etcdService",string(etcdService))
 
 
 }
@@ -256,19 +275,19 @@ func moveEtcd(ips string){
 
 func GenerateEtcdConfFile(thisNodeIp string)string{
 
-	conf := fmt.Sprintf(`<<EOF | tee /etc/systemd/system/etcd.service
+	conf := fmt.Sprintf(`cat <<EOF | sudo tee /etc/systemd/system/etcd.service
 [Unit]
 Description=etcd
 Documentation=https://github.com/coreos
 [Service]
 ExecStart=/usr/local/bin/etcd \\
   --name master-1 \\
-  --cert-file=/etc/etcd/etcd.crt \\
-  --key-file=/etc/etcd/etcd.key \\
-  --peer-cert-file=/etc/etcd/etcd.crt \\
-  --peer-key-file=/etc/etcd/etcd.key \\
-  --trusted-ca-file=/etc/etcd/ca.crt \\
-  --peer-trusted-ca-file=/etc/etcd/ca.crt \\
+  --cert-file=/home/singaravelannandakumar/etcd.crt \\
+  --key-file=/home/singaravelannandakumar/etcd.key \\
+  --peer-cert-file=/home/singaravelannandakumar/etcd.crt \\
+  --peer-key-file=/home/singaravelannandakumar/etcd.key \\
+  --trusted-ca-file=/home/singaravelannandakumar/ca.crt \\
+  --peer-trusted-ca-file=/home/singaravelannandakumar/ca.crt \\
   --peer-client-cert-auth \\
   --client-cert-auth \\
   --initial-advertise-peer-urls https://%s:2380 \\
@@ -290,24 +309,26 @@ EOF`, thisNodeIp,thisNodeIp,thisNodeIp,thisNodeIp,thisNodeIp)
 
 }
 
+
+
 func ConfigureEtcd(){
-	systemCtlStart, err := exec.Command("systemctl start etcd").Output()
+	systemCtlStart, err := exec.Command("sh", "-c",  "sudo systemctl start etcd").Output()
 	if err != nil {
-		fmt.Printf("%s", err)
+		log.Fatal("%s", err)
 	}
 
-	systemCtlStatus, err := exec.Command("systemctl status etcd").Output()
+	systemCtlStatus, err := exec.Command("sh", "-c", "sudo systemctl status etcd").Output()
 	if err != nil {
-		fmt.Printf("%s", err)
+		log.Fatal("%s", err)
 	}
-	systemCtlEnable, err := exec.Command("systemctl enable etcd").Output()
+	systemCtlEnable, err := exec.Command("sh", "-c",  "sudo systemctl enable etcd").Output()
 	if err != nil {
-		fmt.Printf("%s", err)
+		log.Fatal("%s", err)
 	}
 
-	fmt.Println(systemCtlStart)
-	fmt.Println(systemCtlStatus)
-    fmt.Println(systemCtlEnable)
+	fmt.Println("systemCtlStart---->>>", string(systemCtlStart))
+	fmt.Println("systemCtlStatus---->>>", string(systemCtlStatus))
+    fmt.Println("systemCtlEnable--->>>", string(systemCtlEnable))
 }
 
 func DownloadEtcdBinaries(){
