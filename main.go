@@ -19,6 +19,8 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -88,7 +90,12 @@ func EncodeCertPEMEncoded(certBytes []byte, compPrivateKey *rsa.PrivateKey) ([]b
 
 }
 
-func GenerateComponentCertsTemplate(commonName string) *x509.Certificate {
+func GenerateComponentCertsTemplate(commonName string, ip[] string) *x509.Certificate {
+	firstHex,_ := strconv.Atoi(ip[0])
+	secondHex,_ := strconv.Atoi(ip[1])
+	thirdHex,_ := strconv.Atoi(ip[2])
+	fourthHex,_ := strconv.Atoi(ip[3])
+
 	return &x509.Certificate{
 		SerialNumber: big.NewInt(1658),
 		Subject: pkix.Name{
@@ -100,7 +107,8 @@ func GenerateComponentCertsTemplate(commonName string) *x509.Certificate {
 			StreetAddress: []string{"welnestreet"},
 			PostalCode:    []string{"1096"},
 		},
-		IPAddresses:  []net.IP{net.IPv4(127, 0, 0, 1), net.IPv4(192,168,1,80)},
+
+		IPAddresses:  []net.IP{net.IPv4(127, 0, 0, 1), net.IPv4(byte(firstHex),byte(secondHex),byte(thirdHex),byte(fourthHex))},
 		NotBefore:    time.Now(),
 		NotAfter:     time.Now().AddDate(10, 0, 0),
 		SubjectKeyId: []byte{1, 2, 3, 4, 6},
@@ -140,81 +148,71 @@ func GetEtcdBinaries() (*http.Response, error) {
 }
 
 func main() {
-	ip := "192.168.1.0"
-	fmt.Println(ip)
+	ip := os.Args[1]
 
-	//caCert := GenerateCACertTemplate()
-	//caKey, err := GenerateKey(2048)
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//
-	//rootCACert, err := CreateSelfSignedCACert(caCert, caKey)
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//
-	//pemKey, privateKey := EncodeCertPEMEncoded(rootCACert, caKey)
-	//fmt.Println("PEM key", string(pemKey))
-	//fmt.Println("Private Key", string(privateKey))
-	//
-	//file, err := os.Create("./ca.crt")
-	//if err != nil {
-	//
-	//	log.Fatalln(err)
-	//}
-	//_, _ = file.Write(pemKey)
-	//
-	//file2, err := os.Create("./ca.key")
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//_, _ = file2.Write(privateKey)
-	//
-	//etcdCert := GenerateComponentCertsTemplate("localhost")
-	//
-	//etcdKey, err := GenerateKey(2048)
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//
-	//etcdCertByte, err := CreateCompCertWithCASign(etcdCert,caCert, etcdKey, caKey)
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//
-	//etcdpemKey, etcdPrivateKey := EncodeCertPEMEncoded(etcdCertByte, etcdKey)
-	//
-	//etcdfile, err := os.Create("./etcd.crt")
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//_, _ = etcdfile.Write(etcdpemKey)
-	//
-	//etcdKeyFile, err := os.Create("./etcd.key")
-	//if err != nil {
-	//	log.Fatalln(err)
-	//}
-	//
-	//_, _ = etcdKeyFile.Write(etcdPrivateKey)
-	//fmt.Println("DownloadK8sServerBinaries")
-	//DownloadK8sServerBinaries()
-	//fmt.Println("DownloadEtcdBinaries")
-	//DownloadEtcdBinaries()
-	//fmt.Println("CopyEtcdBinaryToUsrLcl")
-	//CopyEtcdBinaryToUsrLcl(ip)
-	//fmt.Println("ConfigureEtcd")
-	//ConfigureEtcd()
-	//localBin, err := exec.Command("cp", "-r", "/etcd/etcd-v3.4.13-linux-amd64/etcd", "/").Output()
-	//if err != nil {
-	//	log.Println("Error occured")
-	//	log.Fatal(err)
-	//}
-	//fmt.Println(localBin)
+	caCert := GenerateCACertTemplate()
+	caKey, err := GenerateKey(2048)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	//etcdConf := GenerateEtcdConfFile("127.0.0.1")
+	rootCACert, err := CreateSelfSignedCACert(caCert, caKey)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-	CopyEtcdBinaryToUsrLcl("127.0.0.1")
+	pemKey, privateKey := EncodeCertPEMEncoded(rootCACert, caKey)
+	fmt.Println("PEM key", string(pemKey))
+	fmt.Println("Private Key", string(privateKey))
+
+	file, err := os.Create("./ca.crt")
+	if err != nil {
+
+		log.Fatalln(err)
+	}
+	_, _ = file.Write(pemKey)
+
+	file2, err := os.Create("./ca.key")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	_, _ = file2.Write(privateKey)
+
+	ips := strings.Split(ip, ".")
+	etcdCert := GenerateComponentCertsTemplate("localhost",ips)
+
+	etcdKey, err := GenerateKey(2048)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	etcdCertByte, err := CreateCompCertWithCASign(etcdCert,caCert, etcdKey, caKey)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	etcdpemKey, etcdPrivateKey := EncodeCertPEMEncoded(etcdCertByte, etcdKey)
+
+	etcdfile, err := os.Create("./etcd.crt")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	_, _ = etcdfile.Write(etcdpemKey)
+
+	etcdKeyFile, err := os.Create("./etcd.key")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	_, _ = etcdKeyFile.Write(etcdPrivateKey)
+
+	fmt.Println("DownloadK8sServerBinaries")
+	DownloadK8sServerBinaries()
+	fmt.Println("DownloadEtcdBinaries")
+	DownloadEtcdBinaries()
+	fmt.Println("CopyEtcdBinaryToUsrLcl")
+	CopyEtcdBinaryToUsrLcl(ip)
+	fmt.Println("ConfigureEtcd")
+	ConfigureEtcd()
 }
 
 func CopyEtcdBinaryToUsrLcl(ips string){
@@ -247,6 +245,11 @@ func moveEtcd(ips string){
 		log.Println("Error occured cat")
 		log.Fatal(err)
 	}
+
+	fmt.Println("localBin",localBin)
+	fmt.Println("local",local)
+	fmt.Println("etcdService",etcdService)
+
 
 }
 
