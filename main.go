@@ -164,8 +164,6 @@ func main() {
 	}
 
 	pemKey, privateKey := EncodeCertPEMEncoded(rootCACert, caKey)
-	fmt.Println("PEM key", string(pemKey))
-	fmt.Println("Private Key", string(privateKey))
 
 	file, err := os.Create("./ca.crt")
 	if err != nil {
